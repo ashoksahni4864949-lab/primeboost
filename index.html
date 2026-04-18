@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growtify | Premium Meta & Google Ads Agency</title>
+    
+    <!-- Theme Initializer -->
+    <script>
+        const savedTheme = localStorage.getItem('growtify-theme') || 'default';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: 'rgb(var(--color-p) / <alpha-value>)', 
+                        accent: 'rgb(var(--color-a) / <alpha-value>)',
+                        dark: '#0f172a'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* --- 5 PREMIUM THEME COLOR VARIABLES --- */
+        :root, :root[data-theme="gold"] {
+            --color-p: 234 179 8;  
+            --color-a: 245 158 11; 
+            --primary-color: #eab308;
+            --accent-color: #f59e0b;
+        }
+        :root[data-theme="sapphire"] {
+            --color-p: 59 130 246; 
+            --color-a: 139 92 246; 
+            --primary-color: #3b82f6;
+            --accent-color: #8b5cf6;
+        }
+        :root[data-theme="emerald"] {
+            --color-p: 16 185 129; 
+            --color-a: 20 184 166; 
+            --primary-color: #10b981;
+            --accent-color: #14b8a6;
+        }
+        :root[data-theme="rose"] {
+            --color-p: 244 63 94;  
+            --color-a: 249 115 22; 
+            --primary-color: #f43f5e;
+            --accent-color: #f97316;
+        }
+        :root[data-theme="cyan"] {
+            --color-p: 6 182 212;  
+            --color-a: 59 130 246; 
+            --primary-color: #06b6d4;
+            --accent-color: #3b82f6;
+        }
+
+        body {
+            background-color: #0b1120;
+            color: #cbd5e1;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) #0f172a;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+        
+        #canvas-container {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; pointer-events: none; will-change: transform; 
+        }
+        #canvas-container canvas { display: block; }
+
+        .gradient-text {
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color), var(--primary-color));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 4s linear infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .glass-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.3) 0%, rgba(15, 23, 42, 0.3) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.02);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-6px);
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.5) 100%);
+            border-color: rgb(var(--color-p) / 0.4);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.7), 
+                        0 0 30px rgb(var(--color-p) / 0.15), 
+                        inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        .reveal-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay, 0ms), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay, 0ms); }
+        .reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay, 0ms), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay, 0ms); }
+        .reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay, 0ms), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay, 0ms); }
+        .reveal-scale { opacity: 0; transform: scale(0.9); transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay, 0ms), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--delay, 0ms); }
+        
+        .reveal-up.active, .reveal-left.active, .reveal-right.active, .reveal-scale.active {
+            opacity: 1; transform: translate(0) scale(1);
+        }
+
+        .float-anim { animation: floating 4s ease-in-out infinite; }
+        .float-anim-delay { animation: floating 4s ease-in-out infinite; animation-delay: 2s; }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- PREMIUM OUTLINE GLOW BUTTON (FIXED) --- */
+        .btn-premium {
+            position: relative;
+            /* Solid dark background inside, gradient strictly on border */
+            background: linear-gradient(#0b1120, #0b1120) padding-box,
+                        linear-gradient(to right, var(--primary-color), var(--accent-color)) border-box;
+            border: 2px solid transparent;
+            border-radius: 9999px;
+            color: white;
+            transition: all 0.3s ease;
+            z-index: 1;
+            overflow: hidden; /* Sliding shine ko button ke andar lock karne ke liye */
+            /* Perfect Outer Glow - Uses theme colors, strictly outside */
+            box-shadow: -8px 0 25px -5px rgb(var(--color-p) / 0.5), 
+                         8px 0 25px -5px rgb(var(--color-a) / 0.5);
+        }
+        
+        .btn-premium:hover {
+            transform: translateY(-2px);
+            box-shadow: -10px 0 30px -2px rgb(var(--color-p) / 0.7), 
+                         10px 0 30px -2px rgb(var(--color-a) / 0.7);
+        }
+
+        /* The Sliding Chamak (Shine Animation) */
+        .btn-premium::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transform: skewX(-20deg);
+            animation: shine 3s infinite;
+            z-index: 0;
+            pointer-events: none;
+        }
+        @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+
+        /* --- PREMIUM GLASS BUTTON (For Navbar) --- */
+        .btn-glass {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 9999px;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3), 0 0 20px rgb(var(--color-p) / 0.2);
+        }
+
+        .arrow-bounce { animation: arrowBounce 1.5s ease-in-out infinite; }
+        @keyframes arrowBounce { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+
+        /* --- CUSTOM CURSOR --- */
+        @media (pointer: fine) { 
+            body, a, button, input { cursor: none !important; }
+            #cursor-dot {
+                position: fixed; top: 0; left: 0; width: 5px; height: 5px;
+                background-color: #ffffff; border-radius: 50%;
+                transform: translate(-50%, -50%); pointer-events: none; z-index: 9999999; 
+                mix-blend-mode: difference; transition: width 0.1s, height 0.1s; 
+            }
+            #cursor-ring {
+                position: fixed; top: 0; left: 0; width: 36px; height: 36px;
+                border: 1px solid rgb(var(--color-p) / 0.2); background: rgb(var(--color-p) / 0.02);
+                backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); border-radius: 50%;
+                transform: translate(-50%, -50%); pointer-events: none; z-index: 9999998; 
+                box-shadow: 0 0 10px rgb(var(--color-p) / 0.05);
+                transition: width 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), height 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.15s ease, border-color 0.15s ease;
+                will-change: transform;
+            }
+            #cursor-ring.hovered {
+                width: 60px; height: 60px; background: rgb(var(--color-a) / 0.1); 
+                border-color: rgb(var(--color-a) / 0.6); box-shadow: 0 0 20px rgb(var(--color-a) / 0.3);
+            }
+            #cursor-ring.clicked { transform: translate(-50%, -50%) scale(0.8); }
+            
+            .cursor-trail {
+                position: fixed; top: 0; left: 0; width: 10px; height: 10px; border-radius: 50%;
+                background: var(--primary-color);
+                box-shadow: 0 0 8px var(--primary-color), 0 0 15px var(--accent-color), 0 0 30px var(--accent-color);
+                pointer-events: none; z-index: 9999997; mix-blend-mode: screen; will-change: transform, opacity;
+            }
+        }
+
+        /* --- PRELOADER --- */
+        #preloader {
+            position: fixed; inset: 0; background: #020617; z-index: 999999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.6s ease, transform 1s cubic-bezier(0.8, 0, 0.2, 1), filter 0.6s ease; overflow: hidden;
+        }
+        #preloader::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at center, rgb(var(--color-p) / 0.1) 0%, transparent 60%);
+            animation: pulseBg 2s ease-in-out infinite alternate;
+        }
+        @keyframes pulseBg { 0% { opacity: 0.4; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.1); } }
+        #preloader.loaded { opacity: 0; pointer-events: none; transform: scale(6); filter: blur(30px); }
+        
+        .loader-orb {
+            width: 140px; height: 140px; border-radius: 50%; position: relative;
+            display: flex; align-items: center; justify-content: center;
+            filter: drop-shadow(0 0 15px rgb(var(--color-p) / 0.3));
+        }
+        .orb-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid transparent; }
+        .orb-ring:nth-child(1) { border-top: 2px solid var(--primary-color); border-right: 2px solid rgb(var(--color-p) / 0.1); animation: spinOrb 1s linear infinite; box-shadow: 0 0 10px var(--primary-color) inset, 0 0 10px var(--primary-color); }
+        .orb-ring:nth-child(2) { inset: 15px; border-bottom: 2px solid var(--accent-color); border-left: 2px solid rgb(var(--color-a) / 0.1); animation: spinOrbReverse 1.5s linear infinite; box-shadow: 0 0 10px var(--accent-color) inset, 0 0 10px var(--accent-color); }
+        .orb-ring:nth-child(3) { inset: 30px; border-top: 2px solid #ffffff; border-bottom: 2px solid #ffffff; animation: spinOrb 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; opacity: 0.3; }
+        .orb-core {
+            width: 40px; height: 40px;
+            background: radial-gradient(circle, #ffffff 0%, var(--primary-color) 40%, var(--accent-color) 100%);
+            border-radius: 50%; animation: pulseCore 1s infinite alternate;
+            box-shadow: 0 0 20px #ffffff, 0 0 40px var(--primary-color), 0 0 80px var(--accent-color); 
+        }
+
+        @keyframes spinOrb { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spinOrbReverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(-360deg); } }
+        @keyframes pulseCore { 0% { transform: scale(0.8); opacity: 0.8; } 100% { transform: scale(1.2); opacity: 1; filter: brightness(1.3); } }
+
+        /* --- GROWTIFY LOGO --- */
+        .growtify-brand {
+            position: relative; display: inline-flex; flex-direction: column;
+            align-items: center; justify-content: center; user-select: none; cursor: pointer; z-index: 10;
+        }
+        .growtify-brand-glow {
+            position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
+            width: 120%; height: 90%; background: rgb(var(--color-p) / 0.9);
+            filter: blur(18px); border-radius: 50%; z-index: 0; transition: all 0.3s ease; pointer-events: none;
+        }
+        .growtify-brand:hover .growtify-brand-glow { background: rgb(var(--color-p) / 1); filter: blur(22px); width: 130%; }
+        .growtify-brand-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; }
+        .growtify-brand-text-wrapper { position: relative; line-height: 1; display: inline-block; }
+        
+        .growtify-brand-dots {
+            position: absolute; top: -6px; left: 21%; width: 42%;
+            display: flex; align-items: flex-end; justify-content: space-between;
+        }
+        .growtify-brand-dots span {
+            background-color: #facc15; border-radius: 50%; display: inline-block;
+            box-shadow: 0 0 4px rgba(250, 204, 21, 0.4); animation: dotWaveGlow 2.5s infinite ease-in-out;
+        }
+        @keyframes dotWaveGlow {
+            0%, 50%, 100% { box-shadow: 0 0 4px rgba(250, 204, 21, 0.4); background-color: #facc15; transform: translateY(0) scale(1); }
+            25% { box-shadow: 0 0 12px rgba(250, 204, 21, 1), 0 0 20px rgba(255, 255, 255, 0.6); background-color: #fef08a; transform: translateY(-1px) scale(1.2); }
+        }
+        .growtify-brand-dots span:nth-child(1) { width: 3px; height: 3px; animation-delay: 0s; }
+        .growtify-brand-dots span:nth-child(2) { width: 4px; height: 4px; animation-delay: 0.2s; }
+        .growtify-brand-dots span:nth-child(3) { width: 5px; height: 5px; animation-delay: 0.4s; }
+        .growtify-brand-dots span:nth-child(4) { width: 6.5px; height: 6.5px; animation-delay: 0.6s; }
+        .growtify-brand-dots span:nth-child(5) { width: 6.5px; height: 6.5px; animation-delay: 0.8s; }
+
+        .growtify-brand-title {
+            font-family: 'Poppins', sans-serif; font-size: 34px; font-weight: 700;
+            color: #ffffff; letter-spacing: -0.02em; margin: 0; padding: 0; line-height: 1; text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .growtify-brand-tagline {
+            font-family: 'Dancing Script', cursive; font-size: 13px; font-weight: 600;
+            color: #cbd5e1; margin-top: -2px; letter-spacing: 0.04em; line-height: 1; transform: translateX(2px); opacity: 0.9;
+        }
+        
+        .loader-progress-wrap { margin-top: 25px; width: 240px; display: flex; flex-direction: column; align-items: center; z-index: 10; }
+        .loader-bar-bg { width: 100%; height: 2px; background: rgba(255,255,255,0.05); border-radius: 2px; overflow: hidden; position: relative; }
+        .loader-bar-fill {
+            height: 100%; width: 0%; border-radius: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), #ffffff);
+            box-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--accent-color);
+        }
+        .loader-percentage { margin-top: 12px; font-size: 0.75rem; color: #94a3b8; font-weight: 500; letter-spacing: 3px; font-variant-numeric: tabular-nums; }
+        .loader-percentage span { color: #ffffff; }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-primary selection:text-white">
+
+    <!-- THEME SWITCHER -->
+    <div class="fixed bottom-6 left-6 z-[100] glass-panel rounded-full px-3 py-2 flex items-center gap-3 border border-white/10 shadow-2xl backdrop-blur-xl bg-slate-900/50">
+        <i class="fa-solid fa-palette text-slate-400 text-sm"></i>
+        <div class="w-px h-4 bg-white/20"></div>
+        <button onclick="changeTheme('sapphire')" class="w-4 h-4 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 hover:scale-125 transition-all shadow-[0_0_5px_#3b82f6]" title="Sapphire"></button>
+        <button onclick="changeTheme('emerald')" class="w-4 h-4 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 hover:scale-125 transition-all shadow-[0_0_5px_#10b981]" title="Emerald"></button>
+        <button onclick="changeTheme('rose')" class="w-4 h-4 rounded-full bg-gradient-to-br from-rose-400 to-orange-500 hover:scale-125 transition-all shadow-[0_0_5px_#f43f5e]" title="Rose"></button>
+        <button onclick="changeTheme('default')" class="w-4 h-4 rounded-full bg-gradient-to-br from-yellow-400 to-amber-600 hover:scale-125 transition-all shadow-[0_0_5px_#eab308]" title="Gold"></button>
+        <button onclick="changeTheme('cyan')" class="w-4 h-4 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 hover:scale-125 transition-all shadow-[0_0_5px_#06b6d4]" title="Ocean"></button>
+    </div>
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="loader-orb">
+            <div class="orb-ring"></div>
+            <div class="orb-ring"></div>
+            <div class="orb-ring"></div>
+            <div class="orb-core"></div>
+        </div>
+        
+        <div class="growtify-brand mt-10 scale-125">
+            <div class="growtify-brand-content">
+                <div class="growtify-brand-text-wrapper">
+                    <div class="growtify-brand-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                    <div class="growtify-brand-title">Growtify</div>
+                </div>
+                <div class="growtify-brand-tagline">Grow with growtify</div>
+            </div>
+        </div>
+
+        <div class="loader-progress-wrap">
+            <div class="loader-bar-bg">
+                <div class="loader-bar-fill" id="loader-bar-fill"></div>
+            </div>
+            <div class="loader-percentage"><span id="loader-percentage-text">0</span>% SYSTEM INIT</div>
+        </div>
+    </div>
+
+    <!-- Cursors -->
+    <div id="cursor-dot" class="hidden md:block"></div>
+    <div id="cursor-ring" class="hidden md:block"></div>
+
+    <div id="canvas-container"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 glass-panel border-b-0 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 flex items-center group">
+                    <div class="growtify-brand scale-[0.8] md:scale-90 origin-left">
+                        <div class="growtify-brand-content">
+                            <div class="growtify-brand-text-wrapper">
+                                <div class="growtify-brand-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                                <div class="growtify-brand-title">Growtify</div>
+                            </div>
+                            <div class="growtify-brand-tagline">Grow with growtify</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#home" class="hover:text-primary transition-colors px-3 py-2 text-sm font-medium">Home</a>
+                        <a href="#about" class="hover:text-primary transition-colors px-3 py-2 text-sm font-medium">About</a>
+                        <a href="#services" class="hover:text-primary transition-colors px-3 py-2 text-sm font-medium">Services</a>
+                        
+                        <!-- Desktop Navbar Premium Glass Button -->
+                        <button onclick="openWaModal()" class="btn-glass inline-flex items-center justify-center px-6 py-2.5 font-bold text-white text-sm tracking-wide group z-10">
+                            <span class="relative z-10 flex items-center">
+                                <i class="fa-brands fa-whatsapp mr-2 text-[#25D366] text-lg"></i>
+                                Let's Connect
+                                <i class="fa-solid fa-arrow-right ml-2 text-primary arrow-bounce group-hover:text-white transition-colors"></i>
+                            </span>
+                        </button>
+
+                    </div>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-300 hover:text-white focus:outline-none"><i class="fa-solid fa-bars text-2xl transition-transform duration-300"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden glass-panel border-t border-white/10 overflow-hidden transition-all duration-300 ease-in-out opacity-0 max-h-0">
+            <div class="px-4 pt-2 pb-4 space-y-2">
+                <a href="#home" class="block hover:bg-white/10 text-white px-3 py-2 rounded-lg text-base font-medium transition-colors">Home</a>
+                <a href="#about" class="block hover:bg-white/10 text-white px-3 py-2 rounded-lg text-base font-medium transition-colors">About</a>
+                <a href="#services" class="block hover:bg-white/10 text-white px-3 py-2 rounded-lg text-base font-medium transition-colors">Services</a>
+                
+                <!-- Mobile Navbar Premium Glass Button -->
+                <button onclick="openWaModal()" class="w-full btn-glass font-bold py-3 px-4 mt-2 text-white flex items-center justify-center gap-2 group">
+                    <i class="fa-brands fa-whatsapp text-[#25D366] text-lg"></i> 
+                    Let's Connect
+                    <i class="fa-solid fa-arrow-right text-primary arrow-bounce group-hover:text-white transition-colors"></i>
+                </button>
+                
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="home" class="relative pt-24 pb-12 lg:pt-56 lg:pb-32 overflow-hidden min-h-screen flex items-center">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center z-10 w-full">
+            <div class="reveal-up inline-flex items-center gap-2 px-4 py-1.5 lg:px-5 lg:py-2 rounded-full glass-panel border-white/10 text-xs lg:text-sm font-medium text-primary mb-6 mx-auto backdrop-blur-xl">
+                <span class="flex h-2 w-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_var(--primary-color)]"></span>
+                World's No.1 Premium Ad Strategy
+            </div>
+            <h1 class="reveal-up text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-extrabold text-white tracking-tight mb-4 lg:mb-6 leading-tight drop-shadow-2xl" style="--delay: 100ms;">
+                Scale your brand with <br class="hidden md:block" />
+                <span class="gradient-text">dynamic data.</span>
+            </h1>
+            <p class="reveal-up mt-4 max-w-2xl mx-auto text-lg lg:text-xl text-slate-300 mb-8 lg:mb-12 font-light px-2" style="--delay: 200ms;">
+                Stop guessing with your ad budget. Partner with an elite agency that has proven experience in delivering unprecedented ROI.
+            </p>
+            <div class="reveal-up flex flex-col sm:flex-row justify-center gap-4 lg:gap-6" style="--delay: 300ms;">
+                <button onclick="openWaModal()" class="btn-premium inline-flex items-center justify-center px-8 py-4 lg:px-10 lg:py-5 font-bold text-white text-lg lg:text-xl tracking-wide group z-10">
+                    <span class="relative z-10 flex items-center">
+                        <i class="fa-brands fa-whatsapp mr-2 lg:mr-3 text-[#25D366] text-xl lg:text-2xl"></i>
+                        WhatsApp Us 
+                        <!-- Arrow animation added back, and color uses dynamic theme text-primary -->
+                        <i class="fa-solid fa-arrow-right ml-2 lg:ml-3 text-primary arrow-bounce group-hover:text-white transition-colors"></i>
+                    </span>
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div id="stats-section" class="mt-12 lg:mt-24 grid grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-6 max-w-4xl mx-auto">
+                <div class="glass-card p-6 rounded-2xl reveal-up" style="--delay: 400ms;">
+                    <h3 class="text-4xl lg:text-5xl font-bold text-white mb-2"><span class="stat-counter" data-target="7">0</span>+</h3>
+                    <p class="text-primary font-medium">Years of Mastery</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl reveal-up" style="--delay: 500ms;">
+                    <h3 class="text-4xl lg:text-5xl font-bold text-white mb-2">₹<span class="stat-counter" data-target="1">0</span> Cr+</h3>
+                    <p class="text-accent font-medium">Ad Spend Managed</p>
+                </div>
+                <div class="glass-card p-6 rounded-2xl reveal-up" style="--delay: 600ms;">
+                    <h3 class="text-4xl lg:text-5xl font-bold text-white mb-2"><span class="stat-counter" data-target="100">0</span>%</h3>
+                    <p class="text-green-400 font-medium">ROI Focused</p>
+                </div>
+            </div>
+
+            <!-- Founder / Agency Owner Section -->
+            <div class="mt-16 lg:mt-24 max-w-5xl mx-auto reveal-up relative group text-left" style="--delay: 700ms;">
+                <div class="absolute -inset-1 bg-gradient-to-r from-primary to-accent rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+                
+                <div class="relative rounded-[2rem] overflow-hidden border border-white/10 glass-panel shadow-2xl flex flex-col md:flex-row">
+                    
+                    <div class="md:w-2/5 relative h-[350px] md:h-auto overflow-hidden border-b md:border-b-0 md:border-r border-white/10">
+                        <img src="Abdul.jpeg" alt="Farhaan Sheikh" class="w-full h-full object-cover object-top transform group-hover:scale-105 transition-transform duration-700 ease-in-out">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0b1120]/90 via-transparent to-transparent md:hidden pointer-events-none"></div>
+                    </div>
+                    
+                    <div class="md:w-3/5 p-8 md:p-12 flex flex-col justify-center relative z-10 bg-gradient-to-r from-slate-900/40 to-transparent">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-primary mb-4 w-max shadow-inner">
+                            <i class="fa-solid fa-user-tie"></i> Meet the Founder
+                        </div>
+                        
+                        <h3 class="text-3xl md:text-4xl font-bold text-white mb-1">Farhaan Sheikh</h3>
+                        <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-6">Performance Marketing Expert</p>
+                        
+                        <div class="relative">
+                            <i class="fa-solid fa-quote-left text-5xl text-white/5 absolute -top-4 -left-3 z-0"></i>
+                            <p class="text-slate-300 font-light leading-relaxed mb-6 relative z-10 text-sm md:text-base">
+                                "My vision has always been to build an agency that focuses on real ROI and revenue, not just clicks and impressions. With over 7 years of experience and ₹1 Crore+ in ad spend managed, we know exactly how to make your brand profitable."
+                            </p>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 mt-2">
+                            <div class="text-xs text-slate-500 font-medium uppercase tracking-widest mr-2">Connect:</div>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-primary hover:-translate-y-1 transition-all" title="LinkedIn">
+                                <i class="fa-brands fa-linkedin-in text-sm"></i>
+                            </a>
+                            <a href="https://www.instagram.com/prime_boostmedia/" target="_blank" class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-primary hover:-translate-y-1 transition-all" title="Instagram">
+                                <i class="fa-brands fa-instagram text-sm"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="py-24 relative z-10 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+                <div class="mb-12 lg:mb-0 reveal-left">
+                    <div class="relative rounded-3xl overflow-hidden glass-panel p-2 shadow-2xl border border-white/10 group float-anim">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="bg-slate-900/60 h-[450px] w-full rounded-2xl flex flex-col items-center justify-center relative overflow-hidden backdrop-blur-md">
+                            <div class="absolute w-64 h-64 border border-primary/30 rounded-full animate-[spin_10s_linear_infinite]"></div>
+                            <div class="absolute w-48 h-48 border border-accent/40 rounded-full animate-[spin_7s_linear_infinite_reverse]"></div>
+                            <i class="fa-solid fa-chart-line text-7xl text-primary mb-6 drop-shadow-[0_0_20px_var(--primary-color)] z-10 float-anim-delay"></i>
+                            <h3 class="text-3xl font-bold text-white z-10">Experience. Data. Results.</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="reveal-right">
+                    <h2 class="text-primary font-semibold tracking-widest uppercase text-xs mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-yellow-400"></i> About Growtify
+                    </h2>
+                    <h3 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight tracking-tight">Elite Performance Agency.</h3>
+                    <p class="text-slate-400 text-lg mb-6 leading-relaxed font-light">
+                        In the digital marketing world, guess-work doesn't work; data and experience do. At Growtify, we have decoded every market trend over the last 7+ years.
+                    </p>
+                    <p class="text-slate-400 text-lg mb-10 leading-relaxed font-light">
+                        We have successfully managed over <strong>₹1 Crore+</strong> in ad spend. Our focus isn't just generating clicks, but driving high-ticket conversions for your brand.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div class="glass-card p-4 rounded-xl flex items-start gap-4 hover:-translate-y-2 transition-transform duration-300">
+                            <div class="mt-1 w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center shrink-0 border border-primary/20">
+                                <i class="fa-solid fa-bullseye text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold">Laser Targeting</h4>
+                                <p class="text-sm text-slate-400 mt-1">Reaching the absolute exact audience.</p>
+                            </div>
+                        </div>
+                        <div class="glass-card p-4 rounded-xl flex items-start gap-4 hover:-translate-y-2 transition-transform duration-300">
+                            <div class="mt-1 w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center shrink-0 border border-accent/20">
+                                <i class="fa-solid fa-rocket text-accent"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white font-bold">Rapid Scaling</h4>
+                                <p class="text-sm text-slate-400 mt-1">Tested & proven growth blueprints.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="py-24 relative z-10 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-20 reveal-up">
+                <h2 class="text-primary font-semibold tracking-widest uppercase text-sm mb-3">Our Arsenal</h2>
+                <h3 class="text-4xl md:text-5xl font-bold text-white mb-6">Platform Supremacy</h3>
+                <p class="text-slate-300 text-lg font-light">We dominate the systems that control the world's most significant traffic.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Meta Ads -->
+                <div class="glass-card p-10 rounded-3xl group reveal-scale relative overflow-hidden">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/40 transition-colors duration-500"></div>
+                    <div class="w-20 h-20 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform duration-300 backdrop-blur-md float-anim">
+                        <i class="fa-brands fa-meta text-5xl bg-gradient-to-tr from-primary to-accent bg-clip-text text-transparent inline-block"></i>
+                    </div>
+                    <h4 class="text-3xl font-bold text-white mb-4">Meta Ecosystem</h4>
+                    <p class="text-slate-300 mb-8 font-light text-lg">
+                        Facebook & Instagram domination. Through advanced AI targeting and creative hooks, we deliver viral growth for your brand.
+                    </p>
+                    <ul class="space-y-4 text-slate-300 font-medium">
+                        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center"><i class="fa-solid fa-check text-primary text-xs"></i></span> High-RoAS E-commerce</li>
+                        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center"><i class="fa-solid fa-check text-primary text-xs"></i></span> Premium Lead Generation</li>
+                        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center"><i class="fa-solid fa-check text-primary text-xs"></i></span> Advanced Pixel Retargeting</li>
+                    </ul>
+                </div>
+
+                <!-- Google Ads -->
+                <div class="glass-card p-10 rounded-3xl group reveal-scale relative overflow-hidden" style="--delay: 150ms;">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-red-500/20 rounded-full blur-3xl group-hover:bg-red-500/40 transition-colors duration-500"></div>
+                    <div class="w-20 h-20 bg-gradient-to-br from-red-500 to-red-800 rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-red-500/30 group-hover:scale-110 transition-transform duration-300 float-anim-delay">
+                        <i class="fa-brands fa-google text-4xl text-white"></i>
+                    </div>
+                    <h4 class="text-3xl font-bold text-white mb-4">Google Search Network</h4>
+                    <p class="text-slate-300 mb-8 font-light text-lg">
+                        Capture high-intent traffic directly from the world's biggest search engine. Target customers who are already looking for you.
+                    </p>
+                    <ul class="space-y-4 text-slate-300 font-medium">
+                        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center"><i class="fa-solid fa-check text-red-500 text-xs"></i></span> Search & Display Campaigns</li>
+                        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center"><i class="fa-solid fa-check text-red-500 text-xs"></i></span> Performance Max & YouTube</li>
+                        <li class="flex items-center gap-3"><span class="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center"><i class="fa-solid fa-check text-red-500 text-xs"></i></span> Competitor Keyword Hijacking</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section id="contact" class="py-32 relative z-10 overflow-hidden">
+        <div class="max-w-5xl mx-auto px-4 relative z-10 text-center reveal-scale">
+            <h2 class="text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-tight drop-shadow-xl">Ignite Your Revenue.</h2>
+            <p class="text-xl text-slate-300 mb-12 font-light">
+                A 15-minute call and your brand's custom blueprint is ready. No fluff, just pure scaling strategy.
+            </p>
+            <div class="glass-panel p-10 md:p-12 rounded-3xl border border-white/20 shadow-[0_0_50px_rgba(0,0,0,0.5)] max-w-lg mx-auto relative overflow-hidden float-anim">
+                <div class="absolute -top-24 -left-24 w-48 h-48 bg-primary/30 rounded-full blur-[50px]"></div>
+                <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-accent/30 rounded-full blur-[50px]"></div>
+                
+                <form class="relative z-10" id="contactForm">
+                    <div class="mb-5 text-left">
+                        <label class="block text-xs font-semibold tracking-wide uppercase text-slate-400 mb-2">Full Name</label>
+                        <input type="text" id="contactName" class="w-full bg-slate-900/50 border border-white/5 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder-white/20 text-base sm:text-sm" placeholder="John Doe" required>
+                    </div>
+                    <div class="mb-5 text-left">
+                        <label class="block text-xs font-semibold tracking-wide uppercase text-slate-400 mb-2">Business Email / Phone</label>
+                        <input type="text" id="contactInfo" class="w-full bg-slate-900/50 border border-white/5 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder-white/20 text-base sm:text-sm" placeholder="contact@brand.com" required>
+                    </div>
+                    <div class="mb-8 text-left">
+                        <label class="block text-xs font-semibold tracking-wide uppercase text-slate-400 mb-2">Website URL</label>
+                        <input type="url" id="contactUrl" class="w-full bg-slate-900/50 border border-white/5 rounded-xl px-5 py-4 text-white focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all placeholder-white/20 text-base sm:text-sm" placeholder="https://" required>
+                    </div>
+                    <button type="submit" class="w-full btn-premium font-bold py-4 px-4 text-white flex items-center justify-center gap-3 group">
+                        <i class="fa-brands fa-whatsapp text-[#25D366] text-xl"></i> 
+                        WhatsApp Us
+                        <!-- Arrow animation added back, and dynamic color added -->
+                        <i class="fa-solid fa-arrow-right text-primary arrow-bounce group-hover:text-white transition-colors"></i>
+                    </button>
+                    
+                    <div id="successMessage" class="hidden mt-5 p-4 bg-green-500/20 border border-green-500/50 rounded-xl text-green-400 font-medium text-sm text-center backdrop-blur-sm transition-all">
+                        <i class="fa-solid fa-circle-check mr-2"></i> Premium Inquiry Sent! Our experts will connect with you.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 glass-panel border-t border-white/5 py-12 mt-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center group">
+                <div class="growtify-brand scale-90 origin-left">
+                    <div class="growtify-brand-content">
+                        <div class="growtify-brand-text-wrapper">
+                            <div class="growtify-brand-dots"><span></span><span></span><span></span><span></span><span></span></div>
+                            <div class="growtify-brand-title">Growtify</div>
+                        </div>
+                        <div class="growtify-brand-tagline">Grow with growtify</div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-slate-500 text-sm font-light">
+                &copy; 2024 Growtify. Elevating Brands Globally.
+            </p>
+            <div class="flex gap-4">
+                <a href="https://www.instagram.com/prime_boostmedia/" target="_blank" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-white hover:text-primary hover:-translate-y-1 transition-all">
+                    <i class="fa-brands fa-instagram text-xl"></i>
+                </a>
+                <a href="#" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-white hover:text-primary hover:-translate-y-1 transition-all">
+                    <i class="fa-brands fa-linkedin-in text-xl"></i>
+                </a>
+                <button onclick="openWaModal()" class="w-12 h-12 rounded-full glass-card flex items-center justify-center text-white hover:text-green-400 hover:-translate-y-1 transition-all">
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Verification Modal -->
+    <div id="waModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center backdrop-blur-md bg-dark/80 px-4 transition-opacity duration-300 opacity-0">
+        <div class="glass-panel p-8 rounded-3xl max-w-sm w-full border border-white/20 shadow-[0_0_40px_rgba(0,0,0,0.5)] transform scale-95 transition-transform duration-300 relative overflow-hidden" id="waModalContent">
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-green-500/20 rounded-full blur-2xl"></div>
+            
+            <div class="flex justify-between items-center mb-6 relative z-10">
+                <h4 class="text-xl font-bold text-white flex items-center gap-2"><i class="fa-brands fa-whatsapp text-green-400"></i> Connect</h4>
+                <button onclick="closeWaModal()" class="text-slate-500 hover:text-white transition-colors"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <p class="text-slate-400 text-sm mb-6 font-light relative z-10 leading-relaxed">Please enter your name to verify you are a human and proceed to WhatsApp.</p>
+            <form id="waVerifyForm" class="relative z-10">
+                <input type="text" id="waName" placeholder="Enter your full name" class="w-full bg-slate-900/50 border border-white/10 rounded-xl px-5 py-4 mb-4 text-white text-base sm:text-sm focus:outline-none focus:border-green-500/50 focus:ring-1 focus:ring-green-500/50 transition-all" required>
+                <button type="submit" class="w-full bg-white/10 hover:bg-white/20 border border-white/10 text-white font-semibold py-3.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 text-sm group">
+                    Open WhatsApp 
+                    <i class="fa-solid fa-arrow-right text-primary arrow-bounce group-hover:text-white transition-colors"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script>
+        // --- 5 COLOR THEME SWITCHER LOGIC ---
+        const themeColors = {
+            default: { p: 0xeab308, a: 0xf59e0b }, 
+            sapphire:{ p: 0x3b82f6, a: 0x8b5cf6 },
+            emerald: { p: 0x10b981, a: 0x14b8a6 },
+            rose:    { p: 0xf43f5e, a: 0xf97316 },
+            gold:    { p: 0xeab308, a: 0xf59e0b }, 
+            cyan:    { p: 0x06b6d4, a: 0x3b82f6 }
+        };
+
+        let pointLight1, pointLight2, matGlassPrimary, matGlassAccent;
+
+        function changeTheme(themeName) {
+            document.documentElement.setAttribute('data-theme', themeName);
+            localStorage.setItem('growtify-theme', themeName);
+
+            if(pointLight1) pointLight1.color.setHex(themeColors[themeName].p);
+            if(pointLight2) pointLight2.color.setHex(themeColors[themeName].a);
+            if(matGlassPrimary) matGlassPrimary.color.setHex(themeColors[themeName].p);
+            if(matGlassAccent) matGlassAccent.color.setHex(themeColors[themeName].a);
+        }
+
+        function openWaModal() {
+            document.body.style.overflow = 'hidden'; 
+            const modal = document.getElementById('waModal');
+            const content = document.getElementById('waModalContent');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('opacity-0'); content.classList.remove('scale-95'); content.classList.add('scale-100'); }, 10);
+        }
+        function closeWaModal() {
+            document.body.style.overflow = ''; 
+            const modal = document.getElementById('waModal');
+            const content = document.getElementById('waModalContent');
+            modal.classList.add('opacity-0'); content.classList.remove('scale-100'); content.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+        document.getElementById('waVerifyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('waName').value;
+            window.open(`https://wa.me/918800383267?text=${encodeURIComponent(`Hi Growtify, I am ${name}. I would like to scale my business.`)}`, '_blank');
+            closeWaModal(); this.reset();
+        });
+
+        // --- Mobile Menu Logic with Animation & Click-Outside ---
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const menuIcon = btn.querySelector('i');
+
+        function toggleMenu() {
+            if (menu.classList.contains('max-h-0')) {
+                // Menu Open Animation
+                menu.classList.remove('max-h-0', 'opacity-0');
+                menu.classList.add('max-h-96', 'opacity-100');
+                menuIcon.classList.remove('fa-bars');
+                menuIcon.classList.add('fa-xmark', 'rotate-90');
+            } else {
+                // Menu Close Animation
+                menu.classList.add('max-h-0', 'opacity-0');
+                menu.classList.remove('max-h-96', 'opacity-100');
+                menuIcon.classList.add('fa-bars');
+                menuIcon.classList.remove('fa-xmark', 'rotate-90');
+            }
+        }
+
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent instant close
+            toggleMenu();
+        });
+
+        // Close when clicking a link inside menu
+        menu.querySelectorAll('a, button').forEach(el => { 
+            el.addEventListener('click', () => {
+                if (!menu.classList.contains('max-h-0')) toggleMenu();
+            }); 
+        });
+
+        // Close when clicking anywhere outside the menu
+        document.addEventListener('click', (e) => {
+            if (!menu.contains(e.target) && !btn.contains(e.target)) {
+                if (!menu.classList.contains('max-h-0')) {
+                    toggleMenu();
+                }
+            }
+        });
+
+        document.body.style.overflow = 'hidden'; 
+        const revealElements = document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right, .reveal-scale');
+        const revealObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) { entry.target.classList.add('active'); observer.unobserve(entry.target); }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        let is3DActive = false; 
+
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            const barFill = document.getElementById('loader-bar-fill');
+            const percentageText = document.getElementById('loader-percentage-text');
+            let startTime = null; const duration = 1200; 
+            const easeOutQuart = (t) => 1 - (--t) * t * t * t;
+
+            const updateLoader = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                let progress = elapsed / duration;
+                if (progress >= 1) progress = 1;
+                const easedProgress = easeOutQuart(progress) * 100;
+                barFill.style.width = `${easedProgress}%`;
+                percentageText.innerText = Math.floor(easedProgress);
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateLoader);
+                } else {
+                    setTimeout(() => {
+                        preloader.classList.add('loaded');
+                        document.body.style.overflow = ''; 
+                        if (!is3DActive) { is3DActive = true; animate(); }
+                        setTimeout(() => { revealElements.forEach(el => revealObserver.observe(el)); }, 300); 
+                    }, 100);
+                }
+            };
+            requestAnimationFrame(updateLoader);
+        });
+
+        const counters = document.querySelectorAll('.stat-counter');
+        let hasCounted = false;
+        const statObserver = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting && !hasCounted) {
+                hasCounted = true;
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const duration = 2000; const step = target / (duration / 16);
+                    let current = 0;
+                    const updateCount = () => {
+                        current += step;
+                        if(current < target) { counter.innerText = Math.ceil(current); requestAnimationFrame(updateCount); } 
+                        else { counter.innerText = target; }
+                    };
+                    updateCount();
+                });
+            }
+        }, { threshold: 0.5 });
+        const statsSec = document.getElementById('stats-section');
+        if(statsSec) statObserver.observe(statsSec);
+
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) { nav.classList.add('shadow-lg', 'border-b', 'border-white/10'); } 
+            else { nav.classList.remove('shadow-lg', 'border-b', 'border-white/10'); }
+        });
+
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x0f172a, 0.015);
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 30;
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.innerWidth < 768 ? 1 : Math.min(window.devicePixelRatio, 1.5)); 
+        container.appendChild(renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        
+        const initTheme = document.documentElement.getAttribute('data-theme') || 'default';
+        
+        pointLight1 = new THREE.PointLight(themeColors[initTheme].p, 1.5, 100);
+        pointLight1.position.set(20, 20, 20);
+        scene.add(pointLight1);
+        
+        pointLight2 = new THREE.PointLight(themeColors[initTheme].a, 1.5, 100);
+        pointLight2.position.set(-20, -20, 20);
+        scene.add(pointLight2);
+
+        const group = new THREE.Group();
+        scene.add(group);
+
+        const geoDisc = new THREE.CylinderGeometry(1, 1, 0.05, 64); 
+
+        matGlassPrimary = new THREE.MeshPhysicalMaterial({ color: themeColors[initTheme].p, metalness: 0.1, roughness: 0.1, transparent: true, opacity: 0.4, clearcoat: 1.0, transmission: 0.8, thickness: 0.5 });
+        matGlassAccent = new THREE.MeshPhysicalMaterial({ color: themeColors[initTheme].a, metalness: 0.1, roughness: 0.1, transparent: true, opacity: 0.4, clearcoat: 1.0, transmission: 0.8, thickness: 0.5 });
+        const matGlassDark = new THREE.MeshPhysicalMaterial({ color: 0x1e293b, metalness: 0.5, roughness: 0.2, transparent: true, opacity: 0.5, clearcoat: 1.0 });
+
+        const materials = [matGlassPrimary, matGlassAccent, matGlassDark];
+        for (let i = 0; i < 5; i++) {
+            const mat = materials[Math.floor(Math.random() * materials.length)];
+            const mesh = new THREE.Mesh(geoDisc, mat);
+            mesh.position.set((Math.random() - 0.5) * 40, (Math.random() - 0.5) * 40, (Math.random() - 0.5) * 20 - 5);
+            mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+            const scale = Math.random() * 6.0 + 5.0; 
+            mesh.scale.set(scale, scale, scale);
+            mesh.userData = { yOffset: Math.random() * Math.PI * 2, yLimit: Math.random() * 0.03 + 0.01, rotSpeedX: (Math.random() - 0.5) * 0.01, rotSpeedY: (Math.random() - 0.5) * 0.01 };
+            group.add(mesh);
+        }
+
+        let targetX = 0; let targetY = 0;
+        let windowHalfX = window.innerWidth / 2; let windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            targetX = (event.clientX - windowHalfX) * 0.02; targetY = (event.clientY - windowHalfY) * 0.02;
+        });
+
+        let gyroEnabled = false;
+        function handleOrientation(event) {
+            if(event.gamma !== null && event.beta !== null) {
+                let gamma = event.gamma; let beta = event.beta;
+                if (gamma > 90) gamma = 90; if (gamma < -90) gamma = -90;
+                targetX = gamma * 0.5; targetY = (beta - 45) * 0.5; 
+            }
+        }
+
+        function initGyro() {
+            if (gyroEnabled) return; 
+            if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                DeviceOrientationEvent.requestPermission().then(permissionState => {
+                        if (permissionState === 'granted') { window.addEventListener('deviceorientation', handleOrientation, true); gyroEnabled = true; }
+                    }).catch(console.error); 
+            } else if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', handleOrientation, true); gyroEnabled = true;
+            }
+        }
+        document.body.addEventListener('click', initGyro); document.body.addEventListener('touchend', initGyro);
+
+        window.addEventListener('resize', () => {
+            windowHalfX = window.innerWidth / 2; windowHalfY = window.innerHeight / 2;
+            camera.aspect = window.innerWidth / window.innerHeight; camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        const clock = new THREE.Clock();
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+            camera.position.x += (targetX - camera.position.x) * 0.05;
+            camera.position.y += (-targetY - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+            group.rotation.y = time * 0.05;
+            group.children.forEach(child => {
+                child.rotation.x += child.userData.rotSpeedX; child.rotation.y += child.userData.rotSpeedY;
+                child.position.y += Math.sin(time + child.userData.yOffset) * child.userData.yLimit;
+            });
+            renderer.render(scene, camera);
+        }
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('contactName').value;
+            const info = document.getElementById('contactInfo').value;
+            const url = document.getElementById('contactUrl').value;
+            window.open(`https://wa.me/918800383267?text=${encodeURIComponent(`Hi Growtify, I am ${name}.\nMy Contact: ${info}\nWebsite: ${url}\n\nI would like to get a custom growth blueprint for my brand.`)}`, '_blank');
+            const msg = document.getElementById('successMessage');
+            msg.classList.remove('hidden'); this.reset();
+            setTimeout(() => { msg.classList.add('hidden'); }, 4000);
+        });
+
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const cursorDot = document.getElementById('cursor-dot');
+            const cursorRing = document.getElementById('cursor-ring');
+            let mouseX = window.innerWidth / 2; let mouseY = window.innerHeight / 2;
+            const trailCount = 15; const trails = [];
+            for (let i = 0; i < trailCount; i++) {
+                const div = document.createElement('div'); div.className = 'cursor-trail hidden md:block';
+                document.body.appendChild(div); trails.push({ element: div, x: mouseX, y: mouseY });
+            }
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                cursorDot.style.transform = `translate(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%))`;
+                if (!cursorRing.classList.contains('clicked')) {
+                    cursorRing.style.transform = `translate(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%))`;
+                }
+            });
+
+            const renderCursor = () => {
+                let prevX = mouseX; let prevY = mouseY;
+                for (let i = 0; i < trailCount; i++) {
+                    trails[i].x += (prevX - trails[i].x) * 0.65; trails[i].y += (prevY - trails[i].y) * 0.65;
+                    const scale = 1 - (i / trailCount); const opacity = 1 - (i / trailCount); 
+                    trails[i].element.style.transform = `translate(calc(${trails[i].x}px - 50%), calc(${trails[i].y}px - 50%)) scale(${scale})`;
+                    trails[i].element.style.opacity = opacity;
+                    prevX = trails[i].x; prevY = trails[i].y;
+                }
+                requestAnimationFrame(renderCursor);
+            };
+            renderCursor();
+
+            document.addEventListener('mouseleave', () => { cursorDot.style.opacity = '0'; cursorRing.style.opacity = '0'; trails.forEach(t => t.element.style.opacity = '0'); });
+            document.addEventListener('mouseenter', () => { cursorDot.style.opacity = '1'; cursorRing.style.opacity = '1'; trails.forEach(t => t.element.style.opacity = '1'); });
+
+            const interactables = document.querySelectorAll('a, button, input');
+            interactables.forEach(el => {
+                el.addEventListener('mouseenter', () => { cursorRing.classList.add('hovered'); cursorDot.style.width = '8px'; cursorDot.style.height = '8px'; });
+                el.addEventListener('mouseleave', () => { cursorRing.classList.remove('hovered'); cursorDot.style.width = '5px'; cursorDot.style.height = '5px'; });
+            });
+
+            window.addEventListener('mousedown', () => { cursorRing.classList.add('clicked'); cursorRing.style.transform = `translate(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%)) scale(0.7)`; });
+            window.addEventListener('mouseup', () => { cursorRing.classList.remove('clicked'); cursorRing.style.transform = `translate(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%))`; });
+        }
+    </script>
+</body>
+</html>
