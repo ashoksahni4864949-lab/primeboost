@@ -1,1 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raftar - Premium Matka Expert</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Montserrat Font jisse bilkul image jaisa bold look aayega -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        // WhatsApp Dark Mode Colors
+                        waBg: '#0B141A',
+                        waCard: '#111B21',
+                        waBorder: '#2A3942',
+                        waText: '#8696A0',
+                        waGreen: '#25D366',
+                        waGreenHover: '#1EBE5A'
+                    }
+                }
+            }
+        }
+    </script>
 
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1271732848340385');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1271732848340385&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code -->
+</head>
+<body class="bg-waBg text-white min-h-screen flex flex-col items-center justify-center relative overflow-hidden selection:bg-waGreen selection:text-black p-4">
+
+    <!-- Background Glow Effect (WhatsApp Green instead of Purple) -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-waGreen/10 blur-[100px] rounded-full pointer-events-none z-0"></div>
+
+    <!-- Main Content Container -->
+    <div class="relative z-10 flex flex-col items-center w-full max-w-2xl text-center">
+        
+        <!-- Logo -->
+        <div class="w-20 h-20 md:w-24 md:h-24 rounded-full border-[3px] border-waGreen flex items-center justify-center text-4xl md:text-5xl font-black tracking-tighter mb-6 shadow-[0_0_30px_rgba(37,211,102,0.2)] bg-waBg">
+            <span class="text-white">R</span><span class="text-waGreen">F</span>
+        </div>
+
+        <!-- Headings -->
+        <h1 class="text-4xl md:text-5xl font-black tracking-wider mb-2 text-white drop-shadow-lg">
+            RAFTAR
+        </h1>
+        <h2 class="text-xl md:text-2xl font-bold tracking-[0.15em] text-waGreen mb-4 drop-shadow-[0_0_10px_rgba(37,211,102,0.3)]">
+            MATKA EXPERT
+        </h2>
+        <p class="text-xs md:text-sm font-bold tracking-[0.2em] text-waText uppercase mb-10">
+            Play Online Matka
+        </p>
+
+        <!-- Main WhatsApp CTA Button -->
+        <a href="https://wa.me/15677724964?text=Hello%20Raftar,%20I%20want%20to%20play%20matka%20online!" target="_blank" 
+           onclick="fbq('track', 'Subscribe');"
+           class="group relative inline-flex items-center justify-center w-full max-w-[450px] px-8 py-5 md:py-6 bg-waGreen text-waBg font-black text-lg md:text-xl rounded-2xl transition-all duration-300 hover:scale-105 hover:bg-waGreenHover shadow-[0_0_40px_rgba(37,211,102,0.3)] hover:shadow-[0_0_50px_rgba(37,211,102,0.5)]">
+            <i class="fab fa-whatsapp text-2xl md:text-3xl mr-3"></i>
+            MESSAGE TO PLAY NOW
+        </a>
+        
+        <!-- Social Proof Text -->
+        <p class="text-xs md:text-sm text-waText mt-4 font-medium">
+            100K+ trusted members playing daily with fast withdrawals
+        </p>
+
+        <!-- Countdown Timer -->
+        <div class="mt-8 border border-waBorder rounded-full px-6 py-2 flex items-center gap-2 bg-waCard/80 backdrop-blur-sm">
+            <span class="text-xs md:text-sm font-bold text-white tracking-wider">OFFER ENDS IN:</span>
+            <span id="countdown" class="text-waGreen font-bold text-sm md:text-base">02:51</span>
+        </div>
+
+        <!-- Feature Cards Grid -->
+        <div class="grid grid-cols-3 gap-3 md:gap-5 w-full max-w-[500px] mt-10">
+            <!-- Card 1 -->
+            <div class="bg-waCard border border-waBorder rounded-2xl p-4 md:p-6 flex flex-col items-center justify-center transition-all hover:border-waGreen/50 hover:bg-waCard/80 hover:-translate-y-1">
+                <i class="fas fa-shield-alt text-waGreen text-xl md:text-2xl mb-2 drop-shadow-[0_0_8px_rgba(37,211,102,0.5)]"></i>
+                <h3 class="text-white font-black text-lg md:text-xl">100%</h3>
+                <p class="text-[10px] md:text-xs text-waText font-bold tracking-wider mt-1 uppercase">Trusted</p>
+            </div>
+            
+            <!-- Card 2 -->
+            <div class="bg-waCard border border-waBorder rounded-2xl p-4 md:p-6 flex flex-col items-center justify-center transition-all hover:border-waGreen/50 hover:bg-waCard/80 hover:-translate-y-1">
+                <i class="fas fa-users text-waGreen text-xl md:text-2xl mb-2 drop-shadow-[0_0_8px_rgba(37,211,102,0.5)]"></i>
+                <h3 class="text-white font-black text-lg md:text-xl">100K+</h3>
+                <p class="text-[10px] md:text-xs text-waText font-bold tracking-wider mt-1 uppercase">Players</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-waCard border border-waBorder rounded-2xl p-4 md:p-6 flex flex-col items-center justify-center transition-all hover:border-waGreen/50 hover:bg-waCard/80 hover:-translate-y-1">
+                <i class="fas fa-money-bill-wave text-waGreen text-xl md:text-2xl mb-2 drop-shadow-[0_0_8px_rgba(37,211,102,0.5)]"></i>
+                <h3 class="text-white font-black text-lg md:text-xl">10 MIN</h3>
+                <p class="text-[10px] md:text-xs text-waText font-bold tracking-wider mt-1 uppercase">Withdrawal</p>
+            </div>
+        </div>
+
+        <!-- Trust Badges -->
+        <div class="flex items-center justify-center gap-4 md:gap-6 mt-10 text-[10px] md:text-xs text-waText font-bold tracking-widest uppercase">
+            <span class="flex items-center gap-1.5">
+                <i class="fas fa-check text-waGreen"></i> Verified
+            </span>
+            <span class="w-1 h-1 rounded-full bg-waBorder"></span>
+            <span class="flex items-center gap-1.5">
+                <i class="fas fa-shield-alt text-waGreen"></i> Secure
+            </span>
+            <span class="w-1 h-1 rounded-full bg-waBorder"></span>
+            <span class="flex items-center gap-1.5">
+                <i class="fas fa-bolt text-waGreen"></i> Instant
+            </span>
+        </div>
+
+    </div>
+
+    <!-- Countdown Timer Script -->
+    <script>
+        // Timer Logic (2 mins 51 seconds se start karke 0 tak laayega)
+        let timeInSeconds = (2 * 60) + 51; 
+        const timerElement = document.getElementById('countdown');
+
+        function updateTimer() {
+            const minutes = Math.floor(timeInSeconds / 60);
+            const seconds = timeInSeconds % 60;
+            
+            // Format 02:51
+            const formattedTime = 
+                String(minutes).padStart(2, '0') + ':' + 
+                String(seconds).padStart(2, '0');
+                
+            timerElement.textContent = formattedTime;
+
+            if (timeInSeconds > 0) {
+                timeInSeconds--;
+            } else {
+                // Jab 0 ho jaye toh wapas refresh kar de (Ya jo chahein action lein)
+                timeInSeconds = (2 * 60) + 51; 
+            }
+        }
+
+        // Har second timer update karega
+        setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>
